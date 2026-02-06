@@ -3,7 +3,7 @@ import { FiArrowLeft, FiStar, FiGitBranch, FiUsers, FiCalendar, FiCode, FiEye } 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Cell, LineChart, Line, ResponsiveContainer } from 'recharts';
 import { format, parseISO, subDays } from 'date-fns';
 
-const Analytics = ({ username, onBack }) => {
+const Analytics = ({ username, onBack, onRepoSelect }) => {
   const [userData, setUserData] = useState(null);
   const [repositories, setRepositories] = useState([]);
   const [commitData, setCommitData] = useState([]);
@@ -97,10 +97,10 @@ const Analytics = ({ username, onBack }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gray-50 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
           <button
             onClick={onBack}
             className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
@@ -108,22 +108,22 @@ const Analytics = ({ username, onBack }) => {
             <FiArrowLeft className="mr-2" />
             Back to Search
           </button>
-          <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
         </div>
 
         {/* User Profile Card */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="flex items-center space-x-6">
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
             <img
               src={userData.avatar_url}
               alt={userData.login}
-              className="w-24 h-24 rounded-full"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-full"
             />
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900">{userData.name || userData.login}</h2>
+            <div className="flex-1 text-center sm:text-left">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{userData.name || userData.login}</h2>
               <p className="text-gray-600 mb-2">@{userData.login}</p>
               {userData.bio && <p className="text-gray-700 mb-4">{userData.bio}</p>}
-              <div className="flex flex-wrap gap-6 text-sm text-gray-600">
+              <div className="flex flex-wrap justify-center sm:justify-start gap-4 sm:gap-6 text-sm text-gray-600">
                 <div className="flex items-center">
                   <FiUsers className="mr-1" />
                   {userData.followers} followers
@@ -142,60 +142,60 @@ const Analytics = ({ username, onBack }) => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Repos</p>
-                <p className="text-2xl font-bold text-blue-600">{userData.public_repos}</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start sm:justify-between">
+              <div className="text-center sm:text-left mb-2 sm:mb-0">
+                <p className="text-xs sm:text-sm text-gray-600">Total Repos</p>
+                <p className="text-xl sm:text-2xl font-bold text-blue-600">{userData.public_repos}</p>
               </div>
-              <FiGitBranch className="h-8 w-8 text-blue-500" />
+              <FiGitBranch className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
             </div>
           </div>
           
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Stars</p>
-                <p className="text-2xl font-bold text-yellow-600">
+          <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start sm:justify-between">
+              <div className="text-center sm:text-left mb-2 sm:mb-0">
+                <p className="text-xs sm:text-sm text-gray-600">Total Stars</p>
+                <p className="text-xl sm:text-2xl font-bold text-yellow-600">
                   {repositories.reduce((sum, repo) => sum + repo.stargazers_count, 0)}
                 </p>
               </div>
-              <FiStar className="h-8 w-8 text-yellow-500" />
+              <FiStar className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500" />
             </div>
           </div>
           
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Followers</p>
-                <p className="text-2xl font-bold text-green-600">{userData.followers}</p>
+          <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start sm:justify-between">
+              <div className="text-center sm:text-left mb-2 sm:mb-0">
+                <p className="text-xs sm:text-sm text-gray-600">Followers</p>
+                <p className="text-xl sm:text-2xl font-bold text-green-600">{userData.followers}</p>
               </div>
-              <FiUsers className="h-8 w-8 text-green-500" />
+              <FiUsers className="h-6 w-6 sm:h-8 sm:w-8 text-green-500" />
             </div>
           </div>
           
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Languages</p>
-                <p className="text-2xl font-bold text-purple-600">{languageData.length}</p>
+          <div className="bg-white rounded-lg p-4 sm:p-6 shadow-lg">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start sm:justify-between">
+              <div className="text-center sm:text-left mb-2 sm:mb-0">
+                <p className="text-xs sm:text-sm text-gray-600">Languages</p>
+                <p className="text-xl sm:text-2xl font-bold text-purple-600">{languageData.length}</p>
               </div>
-              <FiCode className="h-8 w-8 text-purple-500" />
+              <FiCode className="h-6 w-6 sm:h-8 sm:w-8 text-purple-500" />
             </div>
           </div>
         </div>
 
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {/* Commit Activity Chart */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Commit Activity (Last 30 Days)</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Commit Activity (Last 30 Days)</h3>
+            <ResponsiveContainer width="100%" height={250}>
               <LineChart data={commitData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
+                <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Line type="monotone" dataKey="commits" stroke="#3B82F6" strokeWidth={2} />
               </LineChart>
@@ -203,9 +203,9 @@ const Analytics = ({ username, onBack }) => {
           </div>
 
           {/* Language Distribution */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Language Distribution</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">Language Distribution</h3>
+            <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
                   data={languageData}
@@ -228,19 +228,23 @@ const Analytics = ({ username, onBack }) => {
         </div>
 
         {/* Repository List */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-6">Top Repositories</h3>
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+          <h3 className="text-xl font-semibold text-gray-900 mb-6">Repositories</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {repositories.slice(0, 9).map((repo) => (
-              <div key={repo.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            {repositories.slice(0, 12).map((repo) => (
+              <div 
+                key={repo.id} 
+                onClick={() => onRepoSelect(repo.name)}
+                className="border border-gray-200 rounded-lg p-4 hover:shadow-lg hover:border-blue-400 transition-all cursor-pointer"
+              >
                 <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-semibold text-blue-600 truncate">{repo.name}</h4>
-                  <div className="flex items-center text-sm text-gray-500">
+                  <h4 className="font-semibold text-blue-600 truncate flex-1 mr-2">{repo.name}</h4>
+                  <div className="flex items-center text-sm text-gray-500 flex-shrink-0">
                     <FiStar className="mr-1" />
                     {repo.stargazers_count}
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                <p className="text-sm text-gray-600 mb-3 line-clamp-2 min-h-[2.5rem]">
                   {repo.description || 'No description available'}
                 </p>
                 <div className="flex items-center justify-between text-xs text-gray-500">
@@ -248,11 +252,26 @@ const Analytics = ({ username, onBack }) => {
                     <div className="w-3 h-3 rounded-full bg-blue-500 mr-1"></div>
                     {repo.language || 'Unknown'}
                   </span>
-                  <span>Updated {format(parseISO(repo.updated_at), 'MMM dd')}</span>
+                  <span className="truncate ml-2">Updated {format(parseISO(repo.updated_at), 'MMM dd')}</span>
                 </div>
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Most Recent Repos Bar Chart */}
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 mt-8">
+          <h3 className="text-xl font-semibold text-gray-900 mb-6">Most Recent Repositories (Stars)</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={repositories.slice(0, 10).map(r => ({ name: r.name.slice(0, 15), stars: r.stargazers_count, forks: r.forks_count }))}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} tick={{ fontSize: 11 }} />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="stars" fill="#F59E0B" name="Stars" />
+              <Bar dataKey="forks" fill="#3B82F6" name="Forks" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>
